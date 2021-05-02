@@ -82,12 +82,7 @@ public class Publisher {
 
         Publisher publisher = (Publisher) o;
 
-        if (name != null ? !name.equals(publisher.name) : publisher.name != null) return false;
-        if (addressLine1 != null ? !addressLine1.equals(publisher.addressLine1) : publisher.addressLine1 != null)
-            return false;
-        if (city != null ? !city.equals(publisher.city) : publisher.city != null) return false;
-        if (state != null ? !state.equals(publisher.state) : publisher.state != null) return false;
-        return zip != null ? zip.equals(publisher.zip) : publisher.zip == null;
+        return id != null ? id.equals(publisher.id) : publisher.id == null;
     }
 
     @Override
