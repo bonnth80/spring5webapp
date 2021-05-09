@@ -26,32 +26,55 @@ public class BootStrapData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Author eric = new Author("Eric", "Evans");
-        Book ddd = new Book("Domain Driven Design", "123123");
-        eric.getBooks().add(ddd);
-        ddd.getAuthors().add(eric);
-
-        authorRepository.save(eric);
-        bookRepository.save(ddd);
-
-        Author rod = new Author("Rod", "Johnson");
-        Book noEJB = new Book("J2EE Development without EJB", "61465468");
-        rod.getBooks().add(noEJB);
-        noEJB.getAuthors().add(rod);
-
-        authorRepository.save(rod);
-        bookRepository.save(noEJB);
-
-        Publisher bantam = new Publisher("Bantam",
-                "1 somewhere rd",
-                "Somecity",
-                "SS",
-                "12345");
-
-        publisherRepository.save(bantam);
-
         System.out.println("Started in Bootstrap");
+
+        Publisher publisher = new Publisher("SFG Publishing",
+                "123 Some Str",
+                "St Petersburg",
+                "FL",
+                "55555");
+
+        publisherRepository.save(publisher);
+
+        System.out.println("Publisher count: " + publisherRepository.count());
+
+        System.out.println("New Book Count: " + addBook(
+                "Domain Driven Design",
+                "123123",
+                "Eric",
+                "Evens",
+                publisher
+        ));
+
+        System.out.println("New Book Count: " + addBook(
+                "J2EE Development without EJB",
+                "61465468",
+                "Rod",
+                "Johnson",
+                publisher
+        ));
+
         System.out.println("Number of Books: " + bookRepository.count());
 
     }
+
+    public long addBook(String bookName,
+                       String bookIsbn,
+                       String authorFirstName,
+                       String authorLastName,
+                       Publisher publisher) {
+        Author author = new Author(authorFirstName, authorLastName);
+        Book book = new Book(bookName, bookIsbn);
+        author.getBooks().add(book);
+        book.getAuthors().add(author);
+        publisher.getBooks().add(book);
+        book.setPublisher(publisher);
+
+        authorRepository.save(author);
+        bookRepository.save(book);
+        publisherRepository.save(publisher);
+
+        return bookRepository.count();
+    }
+
 }
